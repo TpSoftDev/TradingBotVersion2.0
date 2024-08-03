@@ -25,7 +25,7 @@ def get_symbol_info(symbol):
         return None
     return symbol_info
 
-def send_trade_request(symbol, lot, sl_points, tp_points):
+def send_trade_request(symbol, lot):
     """Send a trade request to buy the specified symbol."""
     symbol_info = get_symbol_info(symbol)
     if symbol_info is None:
@@ -42,11 +42,9 @@ def send_trade_request(symbol, lot, sl_points, tp_points):
         "action": mt.TRADE_ACTION_DEAL,
         "symbol": symbol,
         "volume": lot,
-        "type": mt.ORDER_TYPE_BUY,
+        "type": mt.ORDER_TYPE_SELL,
         "price": symbol_tick.ask,
-        "sl": symbol_tick.ask - sl_points * symbol_info.point,
-        "tp": symbol_tick.ask + tp_points * symbol_info.point,
-        "comment": "Python Script Buy",
+        "comment": "Python Script Sell",
         "type_time": mt.ORDER_TIME_GTC,
         "type_filling": mt.ORDER_FILLING_IOC
     }
@@ -71,8 +69,6 @@ def main():
     server = 'FTMO-Demo'
     symbol = "BTCUSD"
     lot = 1.0
-    sl_points = 10000  # Example stop loss in points
-    tp_points = 20000  # Example take profit in points
 
     # Initialize and login to MT5
     if not initialize_mt5() or not login_mt5(account_id, password, server):
@@ -80,7 +76,7 @@ def main():
         return
 
     # Send the trade request
-    if send_trade_request(symbol, lot, sl_points, tp_points):
+    if send_trade_request(symbol, lot):
         print("Trade executed successfully.")
     else:
         print("Trade execution failed.")

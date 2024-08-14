@@ -1,5 +1,4 @@
 import MetaTrader5 as mt
-
 def initialize_mt5():
     """Initialize the MetaTrader 5 platform."""
     if not mt.initialize():
@@ -42,9 +41,10 @@ def send_trade_request(symbol, lot):
         "action": mt.TRADE_ACTION_DEAL,
         "symbol": symbol,
         "volume": lot,
-        "type": mt.ORDER_TYPE_SELL,
+        "type": mt.ORDER_TYPE_BUY,
+        "position": 171191483,
         "price": symbol_tick.ask,
-        "comment": "Python Script Sell",
+        "comment": "Close Position",
         "type_time": mt.ORDER_TIME_GTC,
         "type_filling": mt.ORDER_FILLING_IOC
     }
@@ -61,6 +61,8 @@ def send_trade_request(symbol, lot):
     else:
         print(f"Trade successful, order ticket={result.order}")
         return True
+
+#Order ID 171191483
 
 def main():
     """Main function to execute the trading script."""
